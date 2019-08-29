@@ -16,12 +16,9 @@ public class SnakeBody : MonoBehaviour
 
     private void Update()
     {
-        
 
-        if (_snakeHead._isMoving)
-        {
-            MovementController();
-        }
+
+        MovementController();
     }
 
     private void MovementController()
