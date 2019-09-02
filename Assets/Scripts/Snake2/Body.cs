@@ -1,65 +1,126 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Body : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _snakeBody = new List<GameObject>();
+    public List<GameObject> SnakeBodyList = new List<GameObject>();
     [SerializeField] private GameObject _bodyPrefab;
     [SerializeField] private GameObject _headPrefab;
     [SerializeField] private GameObject _tailPrefab;
 
-    public Vector3 Direction = new Vector3(-0.6f,0f, 0f);
-    private Vector3 _firstBodyPos;
+    public Vector3 Direction = new Vector3(0f, 0f, 0f);
+    private Vector3 _newHeadPos;
     private float _gameTime;
 
     [SerializeField] private Sprite[] _snakePartsSprites; // 0 = head, 1 = body, 2 = tail
 
+    private Apple _apple;
+    private bool _isGameOver;
+
+    private void Awake()
+    {
+        _apple = GameObject.Find("Apple").GetComponent<Apple>();
+        Assert.IsNotNull(_apple, "Failed to access the Apple script.");
+    }
     private void Start()
     {
-        _firstBodyPos = new Vector3(0f, 0f, 0f);
+        _isGameOver = false;
+        _newHeadPos = new Vector3(0f, 0f, 0f);
         for (int i = 0; i < 3; i++)
         {
-            NewBody();
+            NewBodyGenerator();
         }
         _gameTime = Time.time;
     }
 
     private void Update()
     {
+        if (Direction == new Vector3(0f, 0f, 0f))
+            return;
+
         if (Time.time - _gameTime > 0.3f)
         {
-            NewBody();
-            Destroy(_snakeBody.First());
-            _snakeBody.RemoveAt(0);
-            _gameTime = Time.time;
-
-            float totalCount = _snakeBody.Count;
-            for (int i = 0; i < _snakeBody.Count - 1; i++)
+            if (_apple.AteApple)
             {
-                _snakeBody[i].gameObject.tag = "Body";
+                EatAppleMove();
+                _gameTime = Time.time;
             }
-            _snakeBody[_snakeBody.Count - 1].gameObject.tag = "Head";
+            else
+            {
+                MoveSnake();
+                _gameTime = Time.time;
+            }
         }
     }
 
-    private void NewBody()
+    private void NewBodyGenerator()
     {
-        _firstBodyPos += Direction;
-        GameObject bodyClone = Instantiate(_bodyPrefab, _firstBodyPos, Quaternion.identity);
+        _newHeadPos += Direction;
+        GameObject bodyClone = Instantiate(_bodyPrefab, _newHeadPos, Quaternion.identity);
         bodyClone.transform.SetParent(transform);
-        _snakeBody.Add(bodyClone);
+        SnakeBodyList.Add(bodyClone);
     }
 
-    private void ReplaceHeadNTail()
+    private void ApplyTag()
     {
-        Destroy(_snakeBody.Last()); 
-        _snakeBody[_snakeBody.Count - 1] = Instantiate(_headPrefab, _snakeBody[_snakeBody.Count - 1].transform.position + new Vector3(-0.2f, 0f, 0f), Quaternion.Euler(0f, 0f, -90f));
-        _snakeBody[_snakeBody.Count - 1].transform.SetParent(transform);
-        Destroy(_snakeBody.First());
-        _snakeBody[0] = Instantiate(_tailPrefab, _snakeBody[0].transform.position + new Vector3(0.6f, 0f, 0f), Quaternion.identity);
-        _snakeBody[0].transform.SetParent(transform);
-
-
+        float totalCount = SnakeBodyList.Count;
+        for (int i = 0; i < SnakeBodyList.Count - 1; i++)
+        {
+            SnakeBodyList[i].gameObject.tag = "Body";
+        }
+        SnakeBodyList[SnakeBodyList.Count - 1].gameObject.tag = "Head";
     }
+
+
+    private void MoveSnake()
+    {
+        _newHeadPos += Direction;
+        GameObject lastBody = SnakeBodyList.First();
+        lastBody.transform.SetPositionAndRotation(_newHeadPos, Quaternion.identity);
+        SnakeBodyList.RemoveAt(0);
+        SnakeBodyList.Add(lastBody);
+
+        CheckWall(_newHeadPos);
+
+        TouchItSelf(_newHeadPos);
+
+        ApplyTag();
+    }
+
+     private void EatAppleMove()
+    {
+        NewBodyGenerator();
+        ApplyTag();
+    }
+
+    private void TouchItSelf(Vector3 headPos)
+    {
+        foreach (GameObject body in SnakeBodyList)
+        {
+
+            if (body.transform.position == headPos && body != SnakeBodyList.Last())
+            {
+                _isGameOver = true;
+                enabled = false;
+            }
+        }
+    }
+
+    private void CheckWall(Vector3 headPos)
+    {
+        if (headPos.x > 7f || headPos.x < -7f)
+        {
+            _isGameOver = true;
+            enabled = false;
+        }
+        else if (headPos.y > 3.5f || headPos.y < -3.5f)
+        {
+            _isGameOver = true;
+            enabled = false;
+        }
+    }
+   
 }

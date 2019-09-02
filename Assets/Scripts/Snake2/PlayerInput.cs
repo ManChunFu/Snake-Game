@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 public class PlayerInput : MonoBehaviour
@@ -13,14 +14,26 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
+        MovementController();
+    }
+
+    private void MovementController()
+    {
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-            _body.Direction = new Vector3(0f, 0.6f, 0f);
+            if (_body.Direction != new Vector3(0f, -0.7f, 0f))
+                _body.Direction = new Vector3(0f, 0.7f, 0f);
+
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-            _body.Direction = new Vector3(0f, -0.6f, 0f);
+            if (_body.Direction != new Vector3(0f, 0.7f, 0f))
+                _body.Direction = new Vector3(0f, -0.7f, 0f);
+
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-            _body.Direction = new Vector3(-0.6f, 0f, 0f);
+            if(_body.Direction != new Vector3(0.7f, 0f, 0f))
+               _body.Direction = new Vector3(-0.7f, 0f, 0f);
+
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-            _body.Direction = new Vector3(0.6f, 0f, 0f);
+            if (_body.Direction != new Vector3(-0.7f, 0f, 0f))
+                _body.Direction = new Vector3(0.7f, 0f, 0f);
 
     }
    
