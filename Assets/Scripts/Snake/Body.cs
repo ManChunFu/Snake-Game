@@ -13,12 +13,13 @@ public class Body : MonoBehaviour
     public Vector3 Direction = new Vector3(0f, 0f, 0f);
     public Vector3 Rotation = new Vector3(0f, 0f, 0f);
     private float _gameTime;
-
-    [SerializeField] private Sprite[] _snakePartsSprites; // 0 = head, 1 = body, 2 = tail
+    private float _limitToMove;
 
     private Apple _apple;
     private bool _isGameOver;
     private UIManager _uiManager;
+    private SpawnManager _spawnManager;
+    private GameManager _gameManager;
 
     public bool isTouched;
     public bool hitWall;
@@ -36,6 +37,9 @@ public class Body : MonoBehaviour
 
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         Assert.IsNotNull(_uiManager, "Failed to access the UIManager script.");
+
+        _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        Assert.IsNotNull(_gameManager, "Failed to access the GameManager script.");
     }
     private void Start()
     {
@@ -44,6 +48,11 @@ public class Body : MonoBehaviour
         _isGameOver = false;
         
         _gameTime = Time.time;
+
+        if (_gameManager.Level == 1)
+            _limitToMove = 0.3f;
+        else if (_gameManager.Level == 2)
+            _limitToMove = 0.2f;
     }
 
     private void Update()
@@ -51,13 +60,14 @@ public class Body : MonoBehaviour
         if (Direction == new Vector3(0f, 0f, 0f))
             return;
 
-        if (Time.time - _gameTime > 0.4f)
+        if (Time.time - _gameTime > _limitToMove)
         {
             if (_apple.EatApple)
             {
                 NewBodyGenerator();
                 CheckWall(_head.position + Direction);
                 TouchItSelf();
+                CheckObstacle(_head.position + Direction);
                 _gameTime = Time.time;
             }
             else
@@ -65,6 +75,7 @@ public class Body : MonoBehaviour
                 Snake.Move(Direction, Rotation);
                 CheckWall(_head.position + Direction);
                 TouchItSelf();
+                CheckObstacle(_head.position + Direction);
                 _gameTime = Time.time;
             }
         }
@@ -102,6 +113,23 @@ public class Body : MonoBehaviour
         }
     }
 
+    private void CheckObstacle(Vector3 headPos)
+    {
+        if (_gameManager.Level > 1)
+        {
+            _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+
+            if (_spawnManager != null)
+            {
+                foreach (Transform obstacle in _spawnManager.ObstacleList)
+                {
+                    if (obstacle.position == headPos)
+                        SnakeDie();
+                }
+            }
+        }
+    }
+
     public void SnakeDie()
     {
         _isGameOver = true;
@@ -110,5 +138,4 @@ public class Body : MonoBehaviour
     }
 
    
-
 }
