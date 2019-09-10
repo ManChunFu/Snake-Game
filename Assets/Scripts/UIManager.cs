@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text _score;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private Text _level;
+    [SerializeField] private GameObject _levelCompletePanel;
 
     private GameManager _gameManager;
     
@@ -23,11 +24,9 @@ public class UIManager : MonoBehaviour
         _score.text = 00.ToString().PadLeft(2, '0');
         _gameOverPanel.SetActive(false);
         _level.text = "LEVEL " + _gameManager.Level.ToString();
+        _levelCompletePanel.SetActive(false);
 
-        if (_gameManager.Level == 1)
-            _image.sprite = _sprites[0];
-        else if (_gameManager.Level == 2)
-            _image.sprite = _sprites[1];
+        SetUIImage();
     }
 
     public void UpdateScore(int appleCount)
@@ -39,6 +38,28 @@ public class UIManager : MonoBehaviour
     {
         _gameOverPanel.SetActive(true);
     }
-   
 
+    public void EnableLevelCompletePanel()
+    {
+        _levelCompletePanel.SetActive(true);
+    }
+
+    private void SetUIImage()
+    {
+        switch (_gameManager.Level)
+        {
+            case 1:
+                _image.sprite = _sprites[0];
+                break;
+            case 2:
+                _image.sprite = _sprites[1];
+                break;
+            case 3:
+                _image.sprite = _sprites[2];
+                break;
+            default:
+                Debug.Log("No image found.");
+                break;
+        }
+    }
 }

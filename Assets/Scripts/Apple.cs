@@ -36,20 +36,19 @@ public class Apple : MonoBehaviour
     {
         EatApple = false;
         AppleCount = 0;
-        if (_gameManager.Level == 1)
-            _spriteRenderer.sprite = _sprites[0];
-        else if (_gameManager.Level == 2)
-            _spriteRenderer.sprite = _sprites[1];
 
+        SetLevelImage();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Head")
+        if (collision.gameObject.tag == "Head")
         {
             EatApple = true;
             AppleCount++;
+
             if (AppleCount == 10)
-                _gameManager.LoadLevel();
+                _gameManager.LevelComplete();
+
             _uiManager.UpdateScore(AppleCount);
             StartCoroutine(ChangePositionRoutine());
         }
@@ -66,7 +65,7 @@ public class Apple : MonoBehaviour
             _xPos = Random.Range(-10, 10) * 0.5f;
             _yPos = Random.Range(-5, 5) * 0.5f;
             applePos = new Vector3(_xPos, _yPos, 0f);
-        } while (_body.Snake.IsAppleInsideBody(applePos) && IsAppleInsideObstacle(applePos));
+        } while (_body.Snake.IsAppleInsideBody(applePos) || IsAppleInsideObstacle(applePos));
 
         yield return new WaitForSeconds(0.2f);
         transform.position = applePos;
@@ -90,6 +89,25 @@ public class Apple : MonoBehaviour
             return false;
         }
         return false;
+    }
+
+    private void SetLevelImage()
+    {
+        switch (_gameManager.Level)
+        {
+            case 1:
+                _spriteRenderer.sprite = _sprites[0];
+                break;
+            case 2:
+                _spriteRenderer.sprite = _sprites[1];
+                break;
+            case 3:
+                _spriteRenderer.sprite = _sprites[2];
+                break;
+            default:
+                Debug.Log("No image found.");
+                break;
+        }
     }
 }
 

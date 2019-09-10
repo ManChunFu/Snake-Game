@@ -21,18 +21,28 @@ public class GameManager : MonoBehaviour
         Assert.IsNotNull(_apple, "Failed to access the Apple script.");
     }
 
-    public void LoadLevel()
+    public void LevelComplete()
     {
-        if (_apple.AppleCount == 10)
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        _uiManager.EnableLevelCompletePanel();
     }
 
     public void RestartGame()
     {
-        if (Level == 1)
-            SceneManager.LoadScene(1);
-        else if (Level == 2)
-            SceneManager.LoadScene(2);
+        switch (Level)
+        {
+            case 1:
+                SceneManager.LoadScene(1);
+                break;
+            case 2:
+                SceneManager.LoadScene(2);
+                break;
+            case 3:
+                SceneManager.LoadScene(3);
+                break;
+            default:
+                Debug.Log("No scene to load");
+                break;
+        }
     }
 
     public void ExitGame()

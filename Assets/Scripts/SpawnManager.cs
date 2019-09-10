@@ -21,6 +21,9 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
+        if (ObstacleList != null)
+            ObstacleList.Clear();
+
         if (_gameManager.Level == 1)
             return;
 
@@ -60,12 +63,25 @@ public class SpawnManager : MonoBehaviour
             SpawnObstacle(-5f, 2.5f, 0f);
             SpawnObstacle(-4.5f, 2.5f, 0f);
             SpawnObstacle(-4f, 2.5f, 0f);
-            SpawnObstacle(-3.5f, 2.5f, 0f);
-            SpawnObstacle(-5.5f, 2f, 0f);
-            SpawnObstacle(-5f, 2f, 0f);
             SpawnObstacle(-4.5f, 2f, 0f);
             SpawnObstacle(-4f, 2f, 0f);
             SpawnObstacle(-3.5f, 2f, 0f);
+            SpawnObstacle(-3f, 2f, 0f);
+            SpawnObstacle(-3.5f, 1.5f, 0f);
+            SpawnObstacle(-3f, 1.5f, 0f);
+            SpawnObstacle(-2.5f, 1.5f, 0f);
+            SpawnObstacle(-2f, 1.5f, 0f);
+        }
+
+        if (_gameManager.Level == 4)
+        {
+            SpawnObstacle(-5f, 2.5f, 0f);
+            SpawnObstacle(-4.5f, 2.5f, 0f);
+            SpawnObstacle(-4f, 2.5f, 0f);
+            SpawnObstacle(-3.5f, 2.5f, 0f);
+            SpawnObstacle(-2f, 2.5f, 0f);
+            SpawnObstacle(-1.5f, 2.5f, 0f);
+            SpawnObstacle(-1f, 2.5f, 0f);
         }
 
     }
@@ -87,6 +103,22 @@ public class SpawnManager : MonoBehaviour
             SpawnObstacle(-6.5f, -1.5f, 0f);
             SpawnObstacle(-6.5f, -1f, 0f);
         }
+
+        if (_gameManager.Level == 3)
+        {
+            SpawnObstacle(-5.5f, -2.5f, 0f);
+            SpawnObstacle(-5f, -2.5f, 0f);
+            SpawnObstacle(-4.5f, -2.5f, 0f);
+            SpawnObstacle(-4f, -2.5f, 0f);
+            SpawnObstacle(-4.5f, -2f, 0f);
+            SpawnObstacle(-4f, -2f, 0f);
+            SpawnObstacle(-3.5f, -2f, 0f);
+            SpawnObstacle(-3f, -2f, 0f);
+            SpawnObstacle(-3.5f, -1.5f, 0f);
+            SpawnObstacle(-3f, -1.5f, 0f);
+            SpawnObstacle(-2.5f, -1.5f, 0f);
+            SpawnObstacle(-2f, -1.5f, 0f);
+        }
     }
 
     private void SpawnRightUpCorner()
@@ -105,6 +137,22 @@ public class SpawnManager : MonoBehaviour
             SpawnObstacle(6f, 1f, 0f);
             SpawnObstacle(6.5f, 1.5f, 0f);
             SpawnObstacle(6.5f, 1f, 0f);
+        }
+
+        if (_gameManager.Level == 3)
+        {
+            SpawnObstacle(5.5f, 2.5f, 0f);
+            SpawnObstacle(5f, 2.5f, 0f);
+            SpawnObstacle(4.5f, 2.5f, 0f);
+            SpawnObstacle(4f, 2.5f, 0f);
+            SpawnObstacle(4.5f, 2f, 0f);
+            SpawnObstacle(4f, 2f, 0f);
+            SpawnObstacle(3.5f, 2f, 0f);
+            SpawnObstacle(3f, 2f, 0f);
+            SpawnObstacle(3.5f, 1.5f, 0f);
+            SpawnObstacle(3f, 1.5f, 0f);
+            SpawnObstacle(2.5f, 1.5f, 0f);
+            SpawnObstacle(2f, 1.5f, 0f);
         }
     }
 
@@ -125,6 +173,23 @@ public class SpawnManager : MonoBehaviour
             SpawnObstacle(6.5f, -1.5f, 0f);
             SpawnObstacle(6.5f, -1f, 0f);
         }
+
+        if (_gameManager.Level == 3)
+        {
+            SpawnObstacle(5.5f, -2.5f, 0f);
+            SpawnObstacle(5f, -2.5f, 0f);
+            SpawnObstacle(4.5f, -2.5f, 0f);
+            SpawnObstacle(4f, -2.5f, 0f);
+            SpawnObstacle(4.5f, -2f, 0f);
+            SpawnObstacle(4f, -2f, 0f);
+            SpawnObstacle(3.5f, -2f, 0f);
+            SpawnObstacle(3f, -2f, 0f);
+            SpawnObstacle(3.5f, -1.5f, 0f);
+            SpawnObstacle(3f, -1.5f, 0f);
+            SpawnObstacle(2.5f, -1.5f, 0f);
+            SpawnObstacle(2f, -1.5f, 0f);
+        }
+
     }
 
 

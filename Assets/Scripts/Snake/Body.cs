@@ -10,13 +10,11 @@ public class Body : MonoBehaviour
     private Transform _head;
     private Transform _tail;
 
-    public Vector3 Direction = new Vector3(0f, 0f, 0f);
-    public Vector3 Rotation = new Vector3(0f, 0f, 0f);
+    public Vector3 Direction, Rotation;
     private float _gameTime;
     private float _limitToMove;
 
     private Apple _apple;
-    private bool _isGameOver;
     private UIManager _uiManager;
     private SpawnManager _spawnManager;
     private GameManager _gameManager;
@@ -31,6 +29,7 @@ public class Body : MonoBehaviour
         _tail = transform.GetChild(2);
 
         Snake = new SnakeLinkedList(_head, body, _tail);
+        Snake.PreSetDirectionAndRotation(Direction, Rotation);
 
         _apple = GameObject.Find("Apple").GetComponent<Apple>();
         Assert.IsNotNull(_apple, "Failed to access the Apple script.");
@@ -45,14 +44,10 @@ public class Body : MonoBehaviour
     {
         isTouched = false;
         hitWall = false;
-        _isGameOver = false;
         
         _gameTime = Time.time;
 
-        if (_gameManager.Level == 1)
-            _limitToMove = 0.3f;
-        else if (_gameManager.Level == 2)
-            _limitToMove = 0.2f;
+        SetSpped();
     }
 
     private void Update()
@@ -65,19 +60,38 @@ public class Body : MonoBehaviour
             if (_apple.EatApple)
             {
                 NewBodyGenerator();
-                CheckWall(_head.position + Direction);
+                CheckWall(_head.position + Snake.Direction);
                 TouchItSelf();
-                CheckObstacle(_head.position + Direction);
+                CheckObstacle(_head.position);
                 _gameTime = Time.time;
             }
             else
             {
-                Snake.Move(Direction, Rotation);
-                CheckWall(_head.position + Direction);
+                Snake.Move();
+                CheckWall(_head.position + Snake.Direction);
                 TouchItSelf();
-                CheckObstacle(_head.position + Direction);
+                CheckObstacle(_head.position);
                 _gameTime = Time.time;
             }
+        }
+    }
+
+    private void SetSpped()
+    {
+        switch (_gameManager.Level)
+        {
+            case 1:
+                _limitToMove = 0.3f;
+                break;
+            case 2:
+                _limitToMove = 0.2f;
+                break;
+            case 3:
+                _limitToMove = 0.1f;
+                break;
+            default:
+                Debug.Log("Limit setting is not avilable.");
+                break;
         }
     }
 
@@ -86,7 +100,7 @@ public class Body : MonoBehaviour
     {
         GameObject bodyClone = Instantiate(_bodyPrefab);
         bodyClone.transform.SetParent(transform);
-        Snake.Grow(bodyClone.transform, Direction, Rotation);
+        Snake.Grow(bodyClone.transform);
     }
 
     
@@ -132,10 +146,10 @@ public class Body : MonoBehaviour
 
     public void SnakeDie()
     {
-        _isGameOver = true;
         enabled = false;
         _uiManager.EnableGameOverPanel();
     }
 
+    
    
 }

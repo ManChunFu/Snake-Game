@@ -20,37 +20,32 @@ public class PlayerInput : MonoBehaviour
     private void MovementController()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-            if (_body.Direction != new Vector3(0f, -0.5f, 0f))
+            if (_body.Snake.Direction != new Vector3(0f, -0.5f, 0f))
             {
-                _body.Direction = new Vector3(0f, 0.5f, 0f);
-                _body.Rotation = new Vector3(0f, 0f, -90f);
+                _body.Snake.PreSetDirectionAndRotation(new Vector3(0f, 0.5f, 0f),new Vector3(0f, 0f, -90f));
                 return;
             }
 
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-            if (_body.Direction != new Vector3(0f, 0.5f, 0f))
+            if (_body.Snake.Direction != new Vector3(0f, 0.5f, 0f))
             {
-                _body.Direction = new Vector3(0f, -0.5f, 0f);
-                _body.Rotation = new Vector3(0f, 0f, 90f);
+                _body.Snake.PreSetDirectionAndRotation(new Vector3(0f, -0.5f, 0f), new Vector3(0f, 0f, 90f));
                 return;
             }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-            if (_body.Direction != new Vector3(0.5f, 0f, 0f))
+            if (_body.Snake.Direction != new Vector3(0.5f, 0f, 0f))
             {
-                _body.Direction = new Vector3(-0.5f, 0f, 0f);
-                _body.Rotation = new Vector3(0f, 0f, 0f);
+                _body.Snake.PreSetDirectionAndRotation(new Vector3(-0.5f, 0f, 0f), new Vector3(0f, 0f, 0f));
                 return;
             }
 
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-            if (_body.Direction != new Vector3(-0.5f, 0f, 0f))
+            if (_body.Snake.Direction != new Vector3(-0.5f, 0f, 0f))
             {
-                _body.Direction = new Vector3(0.5f, 0f, 0f);
-                _body.Rotation = new Vector3(0f, 0f, -180f);
+                _body.Snake.PreSetDirectionAndRotation(new Vector3(0.5f, 0f, 0f), new Vector3(0f, 0f, -180f));
                 return;
             }
-
     }
    
 }

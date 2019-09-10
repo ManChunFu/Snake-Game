@@ -1,30 +1,39 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Snake
 {
     public class SnakeLinkedList 
     {
         private Node _headNode;
+        private Vector3 _desiredDirection, _desiredRotation;
         public SnakeLinkedList(Transform head, Transform body, Transform tail)
         {
             _headNode = new Node(head, new Node(body, new Node(tail)));
         }
 
-        public void Move(Vector3 direction, Vector3 euler)
+        public Vector3 Direction { get; internal set; }
+
+        internal void PreSetDirectionAndRotation(Vector3 desiredDirection, Vector3 desiredRotation)
         {
-            Vector3 newPosition = _headNode.SnakePartTransform.position + direction;
-            _headNode.SetLocation(newPosition, Quaternion.Euler(euler));
+            _desiredDirection = desiredDirection;
+            _desiredRotation = desiredRotation;
         }
 
-        public void Grow(Transform newTransform, Vector3 direction, Vector3 euler)
+        public void Move()
+        {
+            Vector3 newPosition = _headNode.SnakePartTransform.position + _desiredDirection;
+            _headNode.SetLocation(newPosition, Quaternion.Euler(_desiredRotation));
+            Direction = _desiredDirection;
+        }
+
+        public void Grow(Transform newTransform)
         {
             newTransform.SetPositionAndRotation(_headNode.SnakePartTransform.position, _headNode.SnakePartTransform.rotation);
-            _headNode.SnakePartTransform.SetPositionAndRotation(_headNode.SnakePartTransform.position + direction, Quaternion.Euler(euler));
+            _headNode.SnakePartTransform.SetPositionAndRotation(_headNode.SnakePartTransform.position + _desiredDirection, Quaternion.Euler(_desiredRotation));
 
             _headNode.ChangeNext(newTransform);
         }
-
-
 
         public bool IsHeadTouchingBody
         {
