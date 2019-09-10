@@ -57,6 +57,9 @@ public class UIManager : MonoBehaviour
             case 3:
                 _image.sprite = _sprites[2];
                 break;
+            case 4:
+                _image.sprite = _sprites[3];
+                break;
             default:
                 Debug.Log("No image found.");
                 break;

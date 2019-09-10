@@ -104,6 +104,9 @@ public class Apple : MonoBehaviour
             case 3:
                 _spriteRenderer.sprite = _sprites[2];
                 break;
+            case 4:
+                _spriteRenderer.sprite = _sprites[3];
+                break;
             default:
                 Debug.Log("No image found.");
                 break;

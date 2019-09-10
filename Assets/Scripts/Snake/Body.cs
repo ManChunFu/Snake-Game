@@ -18,6 +18,7 @@ public class Body : MonoBehaviour
     private UIManager _uiManager;
     private SpawnManager _spawnManager;
     private GameManager _gameManager;
+    private Animator _hitWallAnim;
 
     public bool isTouched;
     public bool hitWall;
@@ -39,6 +40,9 @@ public class Body : MonoBehaviour
 
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         Assert.IsNotNull(_gameManager, "Failed to access the GameManager script.");
+
+        _hitWallAnim = GameObject.Find("Animator").GetComponent<Animator>();
+        Assert.IsNotNull(_hitWallAnim, "Failed to find Animator component.");
     }
     private void Start()
     {
@@ -89,6 +93,9 @@ public class Body : MonoBehaviour
             case 3:
                 _limitToMove = 0.1f;
                 break;
+            case 4:
+                _limitToMove = 0.5f;
+                break;
             default:
                 Debug.Log("Limit setting is not avilable.");
                 break;
@@ -117,11 +124,13 @@ public class Body : MonoBehaviour
     {
         if (headPos.x > 8f || headPos.x < -8f)
         {
+            _hitWallAnim.SetTrigger("HitWall");
             SnakeDie();
             hitWall = true;
         }
         else if (headPos.y > 4f || headPos.y < -4f)
         {
+            _hitWallAnim.SetTrigger("HitWall");
             SnakeDie();
             hitWall = true;
         }
@@ -138,7 +147,10 @@ public class Body : MonoBehaviour
                 foreach (Transform obstacle in _spawnManager.ObstacleList)
                 {
                     if (obstacle.position == headPos)
+                    {
+                        _hitWallAnim.SetTrigger("HitWall");
                         SnakeDie();
+                    }
                 }
             }
         }

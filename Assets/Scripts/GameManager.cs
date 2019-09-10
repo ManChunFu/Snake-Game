@@ -39,6 +39,9 @@ public class GameManager : MonoBehaviour
             case 3:
                 SceneManager.LoadScene(3);
                 break;
+            case 4:
+                SceneManager.LoadScene(4);
+                break;
             default:
                 Debug.Log("No scene to load");
                 break;
