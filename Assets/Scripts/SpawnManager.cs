@@ -192,9 +192,6 @@ public class SpawnManager : MonoBehaviour
             SpawnObstacle(3.5f, 0f, 0f);
             SpawnObstacle(3f, 0f, 0f);
             SpawnObstacle(2.5f, 0f, 0f);
-            SpawnObstacle(2f, 0f, 0f);
-            SpawnObstacle(1.5f, 0f, 0f);
-            SpawnObstacle(1f, 0f, 0f);
         }
     }
 

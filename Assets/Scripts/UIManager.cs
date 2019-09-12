@@ -10,9 +10,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private Text _level;
     [SerializeField] private GameObject _levelCompletePanel;
+    [SerializeField] private GameObject _youWinPanel;
+    [SerializeField] private GameObject _countDownPanel;
 
     private GameManager _gameManager;
-    
 
     private void Awake()
     {
@@ -25,6 +26,10 @@ public class UIManager : MonoBehaviour
         _gameOverPanel.SetActive(false);
         _level.text = "LEVEL " + _gameManager.Level.ToString();
         _levelCompletePanel.SetActive(false);
+        _countDownPanel.SetActive(true);
+
+        if (_gameManager.Level == 4)
+            _youWinPanel.SetActive(false);
 
         SetUIImage();
     }
@@ -42,6 +47,16 @@ public class UIManager : MonoBehaviour
     public void EnableLevelCompletePanel()
     {
         _levelCompletePanel.SetActive(true);
+    }
+
+    public void EnableYouWinPanel()
+    {
+        _youWinPanel.SetActive(true);
+    }
+
+    public void DisableCountDownPanel()
+    {
+        _countDownPanel.SetActive(false);
     }
 
     private void SetUIImage()

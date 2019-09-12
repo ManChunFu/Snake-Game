@@ -18,10 +18,9 @@ public class Body : MonoBehaviour
     private UIManager _uiManager;
     private SpawnManager _spawnManager;
     private GameManager _gameManager;
-    private Animator _hitWallAnim;
 
-    public bool isTouched;
-    public bool hitWall;
+    private Animator _animatorHitWall;
+
 
     private void Awake()
     {
@@ -41,17 +40,15 @@ public class Body : MonoBehaviour
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         Assert.IsNotNull(_gameManager, "Failed to access the GameManager script.");
 
-        _hitWallAnim = GameObject.Find("Animator").GetComponent<Animator>();
-        Assert.IsNotNull(_hitWallAnim, "Failed to find Animator component.");
+        _animatorHitWall = GetComponent<Animator>();
+        Assert.IsNotNull(_animatorHitWall, "Failed to find the Animator component.");
+
     }
     private void Start()
     {
-        isTouched = false;
-        hitWall = false;
-        
         _gameTime = Time.time;
 
-        SetSpped();
+        SetSpeed();
     }
 
     private void Update()
@@ -80,7 +77,7 @@ public class Body : MonoBehaviour
         }
     }
 
-    private void SetSpped()
+    private void SetSpeed()
     {
         switch (_gameManager.Level)
         {
@@ -94,7 +91,7 @@ public class Body : MonoBehaviour
                 _limitToMove = 0.1f;
                 break;
             case 4:
-                _limitToMove = 0.5f;
+                _limitToMove = 0.08f;
                 break;
             default:
                 Debug.Log("Limit setting is not avilable.");
@@ -116,7 +113,6 @@ public class Body : MonoBehaviour
         if (Snake.IsHeadTouchingBody)
         {
             SnakeDie();
-            isTouched = true;
         }
     }
 
@@ -124,15 +120,13 @@ public class Body : MonoBehaviour
     {
         if (headPos.x > 8f || headPos.x < -8f)
         {
-            _hitWallAnim.SetTrigger("HitWall");
+            _animatorHitWall.SetTrigger("HitWall");
             SnakeDie();
-            hitWall = true;
         }
         else if (headPos.y > 4f || headPos.y < -4f)
         {
-            _hitWallAnim.SetTrigger("HitWall");
+            _animatorHitWall.SetTrigger("HitWall");
             SnakeDie();
-            hitWall = true;
         }
     }
 
@@ -148,7 +142,7 @@ public class Body : MonoBehaviour
                 {
                     if (obstacle.position == headPos)
                     {
-                        _hitWallAnim.SetTrigger("HitWall");
+                        _animatorHitWall.SetTrigger("HitWall");
                         SnakeDie();
                     }
                 }

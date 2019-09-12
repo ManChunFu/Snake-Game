@@ -19,11 +19,20 @@ public class GameManager : MonoBehaviour
 
         _apple = GameObject.Find("Apple").GetComponent<Apple>();
         Assert.IsNotNull(_apple, "Failed to access the Apple script.");
+
+        Time.timeScale = 0;
+
     }
 
     public void LevelComplete()
     {
-        _uiManager.EnableLevelCompletePanel();
+        if (Level == 4)
+            _uiManager.EnableYouWinPanel();
+        else
+        {
+            Time.timeScale = 0;
+            _uiManager.EnableLevelCompletePanel();
+        }
     }
 
     public void RestartGame()
@@ -46,6 +55,11 @@ public class GameManager : MonoBehaviour
                 Debug.Log("No scene to load");
                 break;
         }
+    }
+
+    public void RestartFromLevel1()
+    {
+        SceneManager.LoadScene(1);
     }
 
     public void ExitGame()
