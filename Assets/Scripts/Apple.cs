@@ -9,6 +9,7 @@ public class Apple : MonoBehaviour
 
     private SpriteRenderer _spriteRenderer;
     [SerializeField] private Sprite[] _sprites;
+    private CircleCollider2D _circleCollider2D;
     public bool EatApple;
     public int AppleCount;
 
@@ -21,6 +22,9 @@ public class Apple : MonoBehaviour
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         Assert.IsNotNull(_spriteRenderer, "Failed to find the Sprite Renderer component.");
+
+        _circleCollider2D = GetComponent<CircleCollider2D>();
+        Assert.IsNotNull(_circleCollider2D, "Failed to find the Box Collider 2D component.");
 
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         Assert.IsNotNull(_uiManager, "Failed to access the UIManager script");
@@ -56,9 +60,18 @@ public class Apple : MonoBehaviour
 
     private IEnumerator ChangePositionRoutine()
     {
-        yield return new WaitForSeconds(0.2f);
-        _spriteRenderer.enabled = false;
+        if (_gameManager.Level == 1)
+            yield return new WaitForSeconds(0.3f);
+        else if (_gameManager.Level < 3)
+            yield return new WaitForSeconds(0.2f);
+        else
+            yield return new WaitForSeconds(0.1f);
 
+        EatApple = false;
+
+        _spriteRenderer.enabled = false;
+        _circleCollider2D.enabled = false;
+        
         Vector3 applePos;
         do
         {
@@ -67,10 +80,9 @@ public class Apple : MonoBehaviour
             applePos = new Vector3(_xPos, _yPos, 0f);
         } while (_body.Snake.IsAppleInsideBody(applePos) || IsAppleInsideObstacle(applePos));
 
-        yield return new WaitForSeconds(0.2f);
         transform.position = applePos;
         _spriteRenderer.enabled = true;
-        EatApple = false;
+        _circleCollider2D.enabled = true;
     }
 
     private bool IsAppleInsideObstacle(Vector3 applePos)

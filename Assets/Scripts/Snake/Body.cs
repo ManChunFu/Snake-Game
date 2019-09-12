@@ -21,6 +21,9 @@ public class Body : MonoBehaviour
 
     private Animator _animatorHitWall;
 
+    private AudioSource _audioSource;
+    [SerializeField] private AudioClip _hitWallSoundClip;
+
 
     private void Awake()
     {
@@ -43,6 +46,9 @@ public class Body : MonoBehaviour
         _animatorHitWall = GetComponent<Animator>();
         Assert.IsNotNull(_animatorHitWall, "Failed to find the Animator component.");
 
+        _audioSource = GetComponent<AudioSource>();
+        Assert.IsNotNull(_audioSource, "Failed to find Audio Source componment.");
+
     }
     private void Start()
     {
@@ -60,6 +66,8 @@ public class Body : MonoBehaviour
         {
             if (_apple.EatApple)
             {
+                _audioSource.Play();
+
                 NewBodyGenerator();
                 CheckWall(_head.position + Snake.Direction);
                 TouchItSelf();
@@ -107,7 +115,7 @@ public class Body : MonoBehaviour
         Snake.Grow(bodyClone.transform);
     }
 
-    
+
     private void TouchItSelf()
     {
         if (Snake.IsHeadTouchingBody)
@@ -152,10 +160,11 @@ public class Body : MonoBehaviour
 
     public void SnakeDie()
     {
+        AudioSource.PlayClipAtPoint(_hitWallSoundClip, Camera.main.transform.position, 1f);
         enabled = false;
         _uiManager.EnableGameOverPanel();
     }
 
-    
-   
+
+
 }
