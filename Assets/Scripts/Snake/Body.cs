@@ -90,16 +90,16 @@ public class Body : MonoBehaviour
         switch (_gameManager.Level)
         {
             case 1:
-                _limitToMove = 0.3f;
-                break;
-            case 2:
                 _limitToMove = 0.2f;
                 break;
+            case 2:
+                _limitToMove = 0.15f;
+                break;
             case 3:
-                _limitToMove = 0.1f;
+                _limitToMove = 0.125f;
                 break;
             case 4:
-                _limitToMove = 0.08f;
+                _limitToMove = 0.1f;
                 break;
             default:
                 Debug.Log("Limit setting is not avilable.");

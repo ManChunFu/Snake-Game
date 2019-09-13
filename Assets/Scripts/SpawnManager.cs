@@ -177,8 +177,8 @@ public class SpawnManager : MonoBehaviour
 
         if (_gameManager.Level == 4)
         {
-            SpawnObstacle(3.5f, 2.5f, 0f);
             SpawnObstacle(3f, 2f, 0f);
+            SpawnObstacle(3f, 1.5f, 0f);
             SpawnObstacle(2.5f, 1.5f, 0f);
             SpawnObstacle(4f, 1f, 0f);
             SpawnObstacle(3.5f, 1f, 0f);
@@ -234,11 +234,10 @@ public class SpawnManager : MonoBehaviour
             SpawnObstacle(4f, -1f, 0f);
             SpawnObstacle(3.5f, -1f, 0f);
             SpawnObstacle(3f, -1f, 0f);
+            SpawnObstacle(3f, -1.5f, 0f);
             SpawnObstacle(2.5f, -1f, 0f);
             SpawnObstacle(2f, -1f, 0f);
-            SpawnObstacle(3f, -1.5f, 0f);
-            SpawnObstacle(2.5f, -2f, 0f);
-            SpawnObstacle(2f, -2.5f, 0f);
+            SpawnObstacle(3f, -2f, 0f);
         }
 
     }

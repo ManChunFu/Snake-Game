@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     private Apple _apple;
     public int Level;
 
+    private Camera _camera;
+
     private void Awake()
     {
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
@@ -20,19 +22,21 @@ public class GameManager : MonoBehaviour
         _apple = GameObject.Find("Apple").GetComponent<Apple>();
         Assert.IsNotNull(_apple, "Failed to access the Apple script.");
 
-        Time.timeScale = 0;
+        _camera = Camera.main;
 
+        Time.timeScale = 0;
     }
 
     public void LevelComplete()
     {
+        Time.timeScale = 0;
         if (Level == 4)
-            _uiManager.EnableYouWinPanel();
-        else
         {
-            Time.timeScale = 0;
-            _uiManager.EnableLevelCompletePanel();
+            _camera.GetComponent<AudioSource>().Stop();
+            _uiManager.EnableYouWinPanel();
         }
+        else
+            _uiManager.EnableLevelCompletePanel();
     }
 
     public void RestartGame()

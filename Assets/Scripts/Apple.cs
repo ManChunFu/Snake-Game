@@ -62,7 +62,7 @@ public class Apple : MonoBehaviour
     {
         if (_gameManager.Level == 1)
             yield return new WaitForSeconds(0.3f);
-        else if (_gameManager.Level < 3)
+        else if (_gameManager.Level < 4)
             yield return new WaitForSeconds(0.2f);
         else
             yield return new WaitForSeconds(0.1f);
